@@ -1,5 +1,11 @@
+import { PlansPage } from "./features/plans/PlansPage";
+
 function App() {
-  return <h1>Hola, FitVal</h1>;
+  return (
+    <main>
+      <PlansPage />
+    </main>
+  );
 }
 
 export default App;
