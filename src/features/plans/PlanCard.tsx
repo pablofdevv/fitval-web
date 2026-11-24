@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { formatPrice } from "../../app/format";
 import type { Plan } from "../../app/types";
 import styles from "./PlanCard.module.css";
@@ -14,6 +15,7 @@ export function PlanCard({ plan }: PlanCardProps) {
         {formatPrice(plan.monthlyPrice)}
         <span className={styles.month}> /mes</span>
       </span>
+      <Link to="/classes">Ver clases</Link>
     </article>
   );
 }
