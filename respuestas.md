@@ -31,3 +31,14 @@ Al cambiar la ruta a `/plan`, la API responde con un código de estado `404 Not 
 *¿Cuántas peticiones salen la segunda vez? ¿Por qué?*
 
 **Respuesta:** La segunda vez se realizan 0 peticiones de red. RTK Query almacena automáticamente en su memoria caché las respuestas asociadas a cada clave de consulta (`/classes?activity:contains=...`). Al volver a escribir las mismas letras, RTK Query detecta que ya dispone de los datos en caché y los devuelve inmediatamente sin realizar nuevas llamadas HTTP.
+
+
+## Parte 3 (Login, registro y sesión)
+
+### Pregunta 5 (Ejercicio 3.1: Sesión en localStorage)
+*¿Sigues dentro después de recargar? ¿Qué hay guardado en `localStorage`? ¿Por qué ese token no le serviría a una API de verdad?*
+
+**Respuesta:**
+- Sí, seguimos dentro tras recargar la página. El store de Redux se inicializa leyendo el token guardado en `localStorage` (`preloadedState: { auth: { token: localStorage.getItem("token") } }`), y el hook `useCurrentUser` lo toma para consultar quién es el usuario (`getMe`), reconstruyendo el estado del usuario en memoria.
+- En `localStorage` solo se guarda la clave `token` con el valor `token-fake-2`. No se guarda nada del usuario (ni correo, ni nombre, ni rol ni contraseña).
+- Ese token no le serviría a una API de verdad porque es solo una cadena arbitraria generada en el cliente (`token-fake-2`), sin firma criptográfica, sin tiempo de expiración y sin validación del servidor. En una API real se utiliza un JWT (JSON Web Token) o una cookie HttpOnly firmado con una clave secreta del backend; si el servidor aceptara un string plano inventado por el navegador, cualquiera podría falsificar `token-fake-1` y vulnerar la seguridad haciéndose pasar por administrador u otro usuario.
