@@ -1,0 +1,48 @@
+.header {
+  background: var(--ink);
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  max-width: 1120px;
+  min-height: 64px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+/* Los enlaces del menú. NavLink añade la clase "active" al de la página actual */
+.nav a:not(.logo) {
+  color: #e5e7eb;
+  text-decoration: none;
+  padding: 8px 0;
+}
+
+.nav a:global(.active) {
+  color: white;
+  border-bottom: 2px solid var(--accent-light);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.user {
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.logout {
+  background: transparent;
+  border: 1px solid #6b7280;
+  padding: 6px 14px;
+}
