@@ -19,3 +19,15 @@ Al apagar `json-server` y recargar la página, `fetch` falla por error de red y 
 
 ### Ejercicio 1.2 (Ruta errónea `/plan`)
 Al cambiar la ruta a `/plan`, la API responde con un código de estado `404 Not Found` en la pestaña Red, activando la comprobación `!response.ok` y mostrando el mensaje de error en rojo en la interfaz.
+
+## Parte 2 (Rutas y horario)
+
+### Pregunta 3 (Ejercicio 2.1: Buscador en la URL)
+*¿Qué pasa con el texto del buscador al recargar y al ir atrás? ¿Pasaría lo mismo si `activity` fuera un `useState`?*
+
+**Respuesta:** Al estar guardado en la URL con `useSearchParams`, el texto del buscador se mantiene intacto al recargar la página y responde al historial del navegador (al pulsar el botón Atrás o Adelante, el valor del buscador cambia automáticamente según el query param de la URL). Si fuera un `useState` local simple, al recargar se resetearía al valor inicial vacío y no se sincronizaría con la navegación del historial del navegador.
+
+### Pregunta 4 (Ejercicio 2.2: Caché de RTK Query)
+*¿Cuántas peticiones salen la segunda vez? ¿Por qué?*
+
+**Respuesta:** La segunda vez se realizan 0 peticiones de red. RTK Query almacena automáticamente en su memoria caché las respuestas asociadas a cada clave de consulta (`/classes?activity:contains=...`). Al volver a escribir las mismas letras, RTK Query detecta que ya dispone de los datos en caché y los devuelve inmediatamente sin realizar nuevas llamadas HTTP.

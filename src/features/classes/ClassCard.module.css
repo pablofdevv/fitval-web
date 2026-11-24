@@ -1,0 +1,38 @@
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: var(--accent-light);
+}
+
+.when {
+  width: 160px;
+  font-weight: 600;
+}
+
+.info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+}
+
+.activity {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.details {
+  color: var(--muted);
+}
