@@ -1,0 +1,77 @@
+{
+  "plans": [
+    { "id": "1", "name": "Básico", "monthlyPrice": 29.9 },
+    { "id": "2", "name": "Completo", "monthlyPrice": 44.9 },
+    { "id": "3", "name": "Estudiante", "monthlyPrice": 24.9 },
+    { "id": "4", "name": "Mañanas", "monthlyPrice": 19.9 }
+  ],
+  "classes": [
+    {
+      "id": "1",
+      "activity": "Spinning",
+      "room": "Sala 1",
+      "startsAt": "2026-11-02T09:00:00.000Z",
+      "spots": 12,
+      "trainerId": 1,
+      "trainerName": "Carla Navarro"
+    },
+    {
+      "id": "2",
+      "activity": "Yoga",
+      "room": "Sala 2",
+      "startsAt": "2026-11-02T18:00:00.000Z",
+      "spots": 10,
+      "trainerId": 2,
+      "trainerName": "Javier Ortega"
+    },
+    {
+      "id": "3",
+      "activity": "Pilates",
+      "room": "Sala 2",
+      "startsAt": "2026-11-03T10:00:00.000Z",
+      "spots": 8,
+      "trainerId": 3,
+      "trainerName": "Elena Romero"
+    },
+    {
+      "id": "4",
+      "activity": "Spinning",
+      "room": "Sala 1",
+      "startsAt": "2026-11-03T19:00:00.000Z",
+      "spots": 12,
+      "trainerId": 1,
+      "trainerName": "Carla Navarro"
+    },
+    {
+      "id": "5",
+      "activity": "Zumba",
+      "room": "Sala 3",
+      "startsAt": "2026-11-04T18:30:00.000Z",
+      "spots": 20,
+      "trainerId": 3,
+      "trainerName": "Elena Romero"
+    },
+    {
+      "id": "6",
+      "activity": "Yoga",
+      "room": "Sala 2",
+      "startsAt": "2026-11-05T09:30:00.000Z",
+      "spots": 10,
+      "trainerId": 2,
+      "trainerName": "Javier Ortega"
+    },
+    {
+      "id": "7",
+      "activity": "Crossfit",
+      "room": "Sala 3",
+      "startsAt": "2026-11-05T20:00:00.000Z",
+      "spots": 3,
+      "trainerId": 1,
+      "trainerName": "Carla Navarro"
+    }
+  ],
+  "users": [
+    { "id": "1", "email": "staff@fitval.es", "password": "staff1234", "role": "staff" },
+    { "id": "2", "email": "lucia@gym.com", "password": "lucia1234", "role": "member" }
+  ]
+}
