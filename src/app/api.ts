@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { GymClass } from "./types";
+import type { GymClass, User } from "./types";
 
 export const api = createApi({
   reducerPath: "api",
@@ -22,7 +22,32 @@ export const api = createApi({
       query: (id) => `/classes/${id}`,
       providesTags: ["Class"],
     }),
+
+    // ¿Quién soy? Recibe el token
+    getMe: builder.query<User, string>({
+      query: (token) => `/users/${token.replace("token-fake-", "")}`,
+      transformResponse: (response: User & { password?: string }) => {
+        const copy = { ...response };
+        delete copy.password;
+        return copy as User;
+      },
+    }),
+
+    // POST /users
+    register: builder.mutation<User, { email: string; password: string }>({
+      query: (body) => ({
+        url: "/users",
+        method: "POST",
+        body: { ...body, role: "member" },
+      }),
+    }),
   }),
 });
 
-export const { useGetClassesQuery, useGetClassQuery } = api;
+export const {
+  useGetClassesQuery,
+  useGetClassQuery,
+  useGetMeQuery,
+  useLazyGetMeQuery,
+  useRegisterMutation,
+} = api;
