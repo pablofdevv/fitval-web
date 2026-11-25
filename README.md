@@ -61,7 +61,16 @@ Netlify: build command `npm run build`, publish directory `dist`, variable `VITE
 
 ## Screenshots
 
-Add one screenshot per page here: plans, schedule filtered by `yoga`, class detail, login, register and staff panel.
+| Page | Screenshot |
+|---|---|
+| Plans | ![Plans](docs/screenshots/01-plans.png) |
+| Schedule filtered by `yoga` | ![Schedule](docs/screenshots/02-schedule-yoga.png) |
+| Class detail | ![Class detail](docs/screenshots/03-class-detail.png) |
+| Login | ![Login](docs/screenshots/04-login.png) |
+| Login error | ![Login error](docs/screenshots/05-login-error.png) |
+| Register | ![Register](docs/screenshots/06-register.png) |
+| Register validation | ![Register validation](docs/screenshots/07-register-validation.png) |
+| Staff panel | ![Staff panel](docs/screenshots/08-staff-panel.png) |
 
 ## Credits
 
