@@ -1,0 +1,23 @@
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.form {
+  flex: 1 1 320px;
+}
+
+.table {
+  flex: 999 1 520px;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.delete {
+  background: white;
+  color: var(--danger);
+  border: 1px solid #fca5a5;
+  padding: 6px 12px;
+}
