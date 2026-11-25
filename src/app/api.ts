@@ -15,11 +15,11 @@ export const api = createApi({
   }),
   tagTypes: ["Class"],
   endpoints: (builder) => ({
-    // GET /classes o GET /classes?activity:contains=yoga
+    // GET /classes o GET /classes?activity=yoga
     getClasses: builder.query<GymClass[], string>({
       query: (activity) =>
         activity
-          ? `/classes?activity:contains=${encodeURIComponent(activity)}`
+          ? `/classes?activity=${encodeURIComponent(activity)}`
           : "/classes",
       providesTags: ["Class"],
     }),
@@ -30,23 +30,15 @@ export const api = createApi({
       providesTags: ["Class"],
     }),
 
-    // ¿Quién soy? Recibe el token
+    // ¿Quién soy? GET /auth/me. El token se envía en la cabecera (prepareHeaders);
+    // el argumento solo sirve de clave de caché para no mezclar sesiones
     getMe: builder.query<User, string>({
-      query: (token) => `/users/${token.replace("token-fake-", "")}`,
-      transformResponse: (response: User & { password?: string }) => {
-        const copy = { ...response };
-        delete copy.password;
-        return copy as User;
-      },
+      query: () => "/auth/me",
     }),
 
-    // POST /users
+    // POST /auth/register. El rol lo decide la API
     register: builder.mutation<User, { email: string; password: string }>({
-      query: (body) => ({
-        url: "/users",
-        method: "POST",
-        body: { ...body, role: "member" },
-      }),
+      query: (body) => ({ url: "/auth/register", method: "POST", body }),
     }),
 
     // POST /classes (solo staff)
@@ -56,7 +48,7 @@ export const api = createApi({
     }),
 
     // DELETE /classes/:id (solo staff)
-    deleteClass: builder.mutation<GymClass, string>({
+    deleteClass: builder.mutation<GymClass, number>({
       query: (id) => ({ url: `/classes/${id}`, method: "DELETE" }),
       invalidatesTags: ["Class"],
     }),

@@ -1,23 +1,25 @@
-import type { User } from "../../app/types";
+import { getErrorMessage } from "../../app/apiError";
 
-type StoredUser = User & { password: string }; // como está en db.json
-
-// Login FALSO: json-server no sabe hacer login.
-// En la Parte 5 lo cambiarás por el de tu API (POST /auth/login).
-// Solo devuelve el token: el usuario se pide después a "/me"
+// Login real: POST /auth/login devuelve solo { accessToken }.
+// Quién soy se pide después a GET /auth/me
 export async function login(email: string, password: string): Promise<string> {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/users?email=${encodeURIComponent(email)}`
-  );
-  if (!response.ok) {
-    throw new Error(`Error ${response.status}`);
+  let response: Response;
+  try {
+    response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+  } catch {
+    throw new Error("No se ha podido conectar con la API.");
   }
-  const users: StoredUser[] = await response.json();
 
-  const found = users.find((u) => u.password === password);
-  if (!found) {
+  const data = await response.json().catch(() => null);
+  if (response.status === 401) {
     throw new Error("Correo o contraseña incorrectos.");
   }
-
-  return `token-fake-${found.id}`;
+  if (!response.ok) {
+    throw new Error(getErrorMessage({ data }));
+  }
+  return (data as { accessToken: string }).accessToken;
 }

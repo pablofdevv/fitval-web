@@ -36,15 +36,11 @@ export function CreateClassForm() {
   async function onSubmit(data: ClassForm) {
     setApiError(null);
     try {
-      // json-server guarda lo que le mandes: si no enviamos el nombre del monitor,
-      // la tarjeta del horario saldría sin él
-      const trainer = TRAINERS.find((t) => t.id === data.trainerId);
       await createClass({
         ...data,
         // datetime-local da "2026-11-20T18:00" (hora local, sin zona).
         // toISOString() lo pasa a UTC con zona
         startsAt: new Date(data.startsAt).toISOString(),
-        trainerName: trainer?.name ?? "",
       }).unwrap();
       reset();
     } catch (error) {
