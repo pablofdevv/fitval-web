@@ -37,7 +37,7 @@ Test users: `staff@fitval.es` / `staff1234` (staff), `lucia@gym.com` / `lucia123
 
 | Variable | Description |
 |---|---|
-| `VITE_API_URL` | Base URL of the API (`http://localhost:3001` with json-server) |
+| `VITE_API_URL` | Base URL of the API (`http://localhost:3000/api` locally, the Render URL in production) |
 
 Never commit `.env`; `.env.example` is committed.
 
@@ -52,6 +52,9 @@ src/
 ```
 
 ## Deployment
+
+- Web (Netlify): https://fitval-pablo.netlify.app
+- API (Render): https://api-fitval-8wyd.onrender.com/api
 
 Netlify: build command `npm run build`, publish directory `dist`, variable `VITE_API_URL`.
 `public/_redirects` makes client-side routes work after a reload.
