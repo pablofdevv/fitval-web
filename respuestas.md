@@ -42,3 +42,16 @@ Al cambiar la ruta a `/plan`, la API responde con un código de estado `404 Not 
 - Sí, seguimos dentro tras recargar la página. El store de Redux se inicializa leyendo el token guardado en `localStorage` (`preloadedState: { auth: { token: localStorage.getItem("token") } }`), y el hook `useCurrentUser` lo toma para consultar quién es el usuario (`getMe`), reconstruyendo el estado del usuario en memoria.
 - En `localStorage` solo se guarda la clave `token` con el valor `token-fake-2`. No se guarda nada del usuario (ni correo, ni nombre, ni rol ni contraseña).
 - Ese token no le serviría a una API de verdad porque es solo una cadena arbitraria generada en el cliente (`token-fake-2`), sin firma criptográfica, sin tiempo de expiración y sin validación del servidor. En una API real se utiliza un JWT (JSON Web Token) o una cookie HttpOnly firmado con una clave secreta del backend; si el servidor aceptara un string plano inventado por el navegador, cualquiera podría falsificar `token-fake-1` y vulnerar la seguridad haciéndose pasar por administrador u otro usuario.
+
+
+## Parte 4 (Panel del personal)
+
+### Pregunta 6 (Apartado 4.1: ProtectedRoute y la seguridad)
+*¿Se ha borrado el Crossfit? Entonces, `ProtectedRoute` ¿basta para que un socio no pueda borrar clases? ¿Quién tiene que protegerlas de verdad?*
+
+**Respuesta:** Sí, el Crossfit se borra: el `curl -X DELETE` va directo a json-server, sin pasar por React, y json-server no comprueba ningún token ni rol. `ProtectedRoute` no basta: solo controla qué pantallas se muestran en el navegador, y cualquiera puede saltárselo con `curl`, Postman o las herramientas del navegador. Quien tiene que proteger las clases de verdad es la API (el backend), comprobando en cada petición el token y el rol del usuario antes de crear o borrar.
+
+### Pregunta 7 (Ejercicio 4.1: crear una clase y la tabla)
+*¿Quién hace que la tabla (y el horario de `/classes`) muestre la clase nueva? Explícalo con `providesTags` e `invalidatesTags`.*
+
+**Respuesta:** Lo hace RTK Query con las etiquetas (tags). Las consultas `getClasses` y `getClass` declaran `providesTags: ["Class"]`: dicen que sus datos en caché dependen de la etiqueta `Class`. La mutation `createClass` declara `invalidatesTags: ["Class"]`: al terminar con éxito, marca esa etiqueta como vieja. RTK Query vuelve entonces a pedir automáticamente todas las consultas que la proporcionan, así que la tabla del panel y el horario de `/classes` se actualizan sin escribir código para ello.
