@@ -57,6 +57,19 @@ Al cambiar la ruta a `/plan`, la API responde con un código de estado `404 Not 
 **Respuesta:** Lo hace RTK Query con las etiquetas (tags). Las consultas `getClasses` y `getClass` declaran `providesTags: ["Class"]`: dicen que sus datos en caché dependen de la etiqueta `Class`. La mutation `createClass` declara `invalidatesTags: ["Class"]`: al terminar con éxito, marca esa etiqueta como vieja. RTK Query vuelve entonces a pedir automáticamente todas las consultas que la proporcionan, así que la tabla del panel y el horario de `/classes` se actualizan sin escribir código para ello.
 
 
+## Parte 5 (Conecta con tu API)
+
+### Pregunta 8 (CORS)
+*Copia la línea importante del error. ¿La API ha recibido la petición y ha respondido? ¿Quién la bloquea? ¿Por qué con Postman sí funciona?*
+
+**Respuesta:** La línea importante es: `Access to fetch at 'https://api-fitval-8wyd.onrender.com/api/plans' from origin 'https://example.com' has been blocked by CORS policy: The 'Access-Control-Allow-Origin' header has a value 'https://fitval-pablo.netlify.app' that is not equal to the supplied origin.` Sí: la API recibe la petición y responde (con `curl` se ve el `204` y la cabecera `access-control-allow-origin`). Quien la bloquea es el **navegador**: al ver que el origen de la web no coincide con el permitido en la cabecera, no deja que el JavaScript lea la respuesta. Con Postman funciona porque CORS es una regla de seguridad que solo aplican los navegadores; Postman no es un navegador y no comprueba esa cabecera.
+
+### Pregunta 9 (JWT)
+*¿Qué datos lleva el token? ¿Lleva tu rol? ¿Para qué hace falta entonces `GET /auth/me`?*
+
+**Respuesta:** El payload lleva solo `sub` (el id del usuario), `iat` (cuándo se creó) y `exp` (cuándo caduca, 24 horas después). El header indica `alg: HS256`. **No lleva el rol ni el correo.** Por eso hace falta `GET /auth/me`: la web envía el token y la API, tras comprobar la firma, consulta la base de datos y devuelve `{ id, email, role }` actuales. Así el rol no se puede falsificar desde el navegador y, si cambia (por ejemplo, un `UPDATE` a staff), se refleja sin tener que volver a entrar.
+
+
 ## Diario de errores
 
 | Qué vi (síntoma y código) | Causa | Cómo lo arreglé (fichero) | Qué le pregunté a la IA |
@@ -69,4 +82,3 @@ Al cambiar la ruta a `/plan`, la API responde con un código de estado `404 Not 
 | Los tipos decían que los `id` eran `string` | La API devuelve `id` numéricos | Cambié `id` a `number` en `Plan`, `GymClass` y `User` (`src/app/types.ts`) y `deleteClass` recibe un número | Claude Code. Correcto |
 | Login con contraseña mala mostraba "Credenciales incorrectas" | Ese texto lo pone mi API; el enunciado espera otro | En `authService.ts`, un `401` muestra "Correo o contraseña incorrectos." | Claude Code. Correcto |
 
-> Las preguntas 8 y 9 las tienes que responder tú tras probarlo (comentar `enableCors` y mirar la consola, y mirar el token en jwt.io).
