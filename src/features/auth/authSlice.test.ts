@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import authReducer, { loggedIn, loggedOut } from "./authSlice";
 
-const lucia = { id: "2", email: "lucia@gym.com", role: "member" as const };
+const lucia = { id: 2, email: "lucia@gym.com", role: "member" as const };
 
 describe("authSlice", () => {
   it("al entrar, guarda el token y el usuario", () => {

@@ -1,13 +1,13 @@
 // Cómo llegan los datos (de momento, de json-server)
 
 export type Plan = {
-  id: string; // json-server guarda los id como texto
+  id: number; // la API de NestJS devuelve los id como número
   name: string;
   monthlyPrice: number;
 };
 
 export type GymClass = {
-  id: string;
+  id: number;
   activity: string;
   room: string;
   startsAt: string; // fecha en texto ISO: "2026-11-02T09:00:00.000Z"
@@ -15,18 +15,17 @@ export type GymClass = {
   trainerName: string;
 };
 
-// Lo que se envía para crear una clase (sin id: lo pone json-server)
+// Lo que se envía para crear una clase (sin id ni trainerName: los pone la API)
 export type NewGymClass = {
   activity: string;
   room: string;
   startsAt: string;
   spots: number;
   trainerId: number;
-  trainerName: string;
 };
 
 export type User = {
-  id: string;
+  id: number;
   email: string;
   role: "member" | "staff";
 };

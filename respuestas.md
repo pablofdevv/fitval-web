@@ -55,3 +55,18 @@ Al cambiar la ruta a `/plan`, la API responde con un código de estado `404 Not 
 *¿Quién hace que la tabla (y el horario de `/classes`) muestre la clase nueva? Explícalo con `providesTags` e `invalidatesTags`.*
 
 **Respuesta:** Lo hace RTK Query con las etiquetas (tags). Las consultas `getClasses` y `getClass` declaran `providesTags: ["Class"]`: dicen que sus datos en caché dependen de la etiqueta `Class`. La mutation `createClass` declara `invalidatesTags: ["Class"]`: al terminar con éxito, marca esa etiqueta como vieja. RTK Query vuelve entonces a pedir automáticamente todas las consultas que la proporcionan, así que la tabla del panel y el horario de `/classes` se actualizan sin escribir código para ello.
+
+
+## Diario de errores
+
+| Qué vi (síntoma y código) | Causa | Cómo lo arreglé (fichero) | Qué le pregunté a la IA |
+|---|---|---|---|
+| La web no podía llamar a la API desde `localhost:5173` (error `blocked by CORS policy`) | El `main.ts` de la API no tenía `enableCors` | Añadí `app.enableCors({ origin: process.env.CORS_ORIGIN ?? "http://localhost:5173" })` (`api-fitval/src/main.ts`) y `CORS_ORIGIN` en `.env.example` | Claude Code revisó el `main.ts` y lo detectó antes de probar. Respuesta correcta a la primera |
+| Buscar `yoga` no habría filtrado | La API filtra con `?activity=`, no con `?activity:contains=` de json-server | Cambié la URL de `getClasses` (`src/app/api.ts`) | Claude Code comparó mi controlador con el endpoint de React. Correcto |
+| Login daba `404` | La API no tiene `GET /users`: el login es `POST /auth/login` y devuelve `{ accessToken }` | Reescribí `authService.ts` y el endpoint `getMe` (`GET /auth/me`, token por cabecera) en `api.ts` | Claude Code. Correcto a la primera |
+| Crear cuenta daba `404` / `400 property role should not exist` | La ruta es `POST /auth/register` y el `RegisterDto` no acepta `role` | Cambié la ruta y quité `role` del body (`src/app/api.ts`) | Claude Code. Correcto |
+| Crear una clase daba `400 property trainerName should not exist` | El `CreateClassDto` no acepta `trainerName`; lo calcula la API con el `trainerId` | Quité `trainerName` del body y del tipo `NewGymClass` (`CreateClassForm.tsx`, `types.ts`) | Claude Code. Correcto |
+| Los tipos decían que los `id` eran `string` | La API devuelve `id` numéricos | Cambié `id` a `number` en `Plan`, `GymClass` y `User` (`src/app/types.ts`) y `deleteClass` recibe un número | Claude Code. Correcto |
+| Login con contraseña mala mostraba "Credenciales incorrectas" | Ese texto lo pone mi API; el enunciado espera otro | En `authService.ts`, un `401` muestra "Correo o contraseña incorrectos." | Claude Code. Correcto |
+
+> Las preguntas 8 y 9 las tienes que responder tú tras probarlo (comentar `enableCors` y mirar la consola, y mirar el token en jwt.io).
